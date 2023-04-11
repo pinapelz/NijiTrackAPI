@@ -66,6 +66,13 @@ class SQLHandler:
         db_date = db_date.isoformat()
         return HistoricalSubData(sub_count, db_date)
     
+    def get_rank_list(self):
+        cursor = self.connection.cursor()
+        query = "SELECT name, channel_id, subscriber_count FROM subscriber_data ORDER BY subscriber_count DESC"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
+    
     def get_current_rank(self, channel_id: str):
         cursor = self.connection.cursor()
         query = """
@@ -81,9 +88,3 @@ class SQLHandler:
         data = RankData(result[0] + 1, member_count)
         return data
     
-    def get_current_subscriber_count(self, channel_id: str):
-        cursor = self.connection.cursor()
-        query = "SELECT subscriber_count FROM subscriber_data WHERE channel_id = %s"
-        cursor.execute(query, (channel_id,))
-        result = cursor.fetchone()
-        return result[0]
