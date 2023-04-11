@@ -1,25 +1,17 @@
 """
-Flask app for serving the static files
-"""
-from flask import Flask, jsonify, abort, request
-
-from sql_handler import SQLHandler
-import fileutil as fs
-import response as res
-import datetime
-app = Flask(__name__)
-
-"""
 API endpoint for querying the database for a specific channel_id and iso_date
 Returns the subcount closest to the iso_date
 """
 
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify, send_from_directory, abort, request
+from flask_cors import CORS
 from sql_handler import SQLHandler
 import fileutil as fs
 import response as res
+import datetime
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/subs/<channel_id>')
 def hist_subs(channel_id):
